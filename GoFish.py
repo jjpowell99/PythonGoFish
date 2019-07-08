@@ -1,7 +1,7 @@
 import random
 def main():
     values = list(range(2,11))
-    values.append('Jack','Queen','King','Ace')
+    values.extend(['Jack','Queen','King','Ace'])
     suits = ["Spades", "Diamonds", "Hearts", "Clubs"]
     deck = []
     for i in suits:
@@ -25,6 +25,6 @@ class Card:
         self.suit = type
         self.value = val
     def toString(self):
-        return self.value + " of " + self.suit
+        return str(self.value) + " of " + self.suit
 if __name__ == "__main__":
     main()
