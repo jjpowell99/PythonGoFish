@@ -21,12 +21,13 @@ def main():
     AIBooks = 0
     playerBooks = 0
     playerTurn = True
-    while len(deck) > 0:
+    #TODO removeBooks and case of hands running out of cards
+    while len(deck) > 0 or len(playerHand) > 0 or len(AIHand) > 0:
         if playerTurn:
-            while true:
+            while True:
                 print(f"You have the cards {playerHand}")
                 askFor = input("What do you want to ask for")
-                if askfor in values:
+                if askFor in values:
                     for i in playerHand:
                         if i.value == askFor:
                             break
@@ -34,7 +35,21 @@ def main():
                             print("Error: You must have at least on of those cards")
                 else:
                     print(f"Error: Input must be one of {values}")
-            
+            takeCards = theyHave(AIHand, askFor)
+            if len(takeCards) > 0:
+                print(f"You got {len(takeCards)} cards")
+                takeCards.reverse
+                for i in takeCards:
+                    playerHand.append(AIHand.pop(i))
+            else:
+                print("Go fish")
+                goFishCard = deck.pop()
+                playerHand.append(goFishCard)
+                if goFishCard.value != askFor:
+                    playerTurn = False
+                    print("You didn't get what you asked for")
+                else:
+                    print(f"You got a {goFishCard.value} which is what you asked for")
         else:
             AIIndex = random.uniform(0,len(AIHand))
             askFor = AIHand[AIIndex].value
@@ -52,6 +67,19 @@ def main():
                 if goFishCard.value != askFor:
                     playerTurn = True
                     print("The computer didn't get what it asked for")
+def removeBook(hand, cardValue):
+    locations = []
+    index = 0
+    for i in hand:
+        if i.value == cardValue:
+            locations.append(index)
+        index += 1
+    if len(locations) == 4:
+        locations.reverse
+        for i in locations:
+            locations.remove(i)
+        return 1
+    return 0
 def theyHave(theirHand, asked):
     indices = []
     index = 0
